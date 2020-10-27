@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">game2048</string>
+    <string name="start">开始游戏</string>
+    <string name="record">游戏记录</string>
+    <string name="title">2048</string>
+    <string name="highestScore">最高分：</string>
+</resources>
