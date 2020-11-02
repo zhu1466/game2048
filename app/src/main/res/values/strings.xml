@@ -4,4 +4,5 @@
     <string name="record">游戏记录</string>
     <string name="title">2048</string>
     <string name="highestScore">最高分：</string>
+
 </resources>
