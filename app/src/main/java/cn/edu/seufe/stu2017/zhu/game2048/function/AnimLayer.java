@@ -3,6 +3,7 @@ package cn.edu.seufe.stu2017.zhu.game2048.function;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.AttributeSet;
 import android.util.Config;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,30 +12,48 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
 import cn.edu.seufe.stu2017.zhu.game2048.R;
 import cn.edu.seufe.stu2017.zhu.game2048.bean.SingleGrid;
+import cn.edu.seufe.stu2017.zhu.game2048.config.Values;
 
 /**
  * 配置卡片的动画动作
  */
 public class AnimLayer extends FrameLayout {
-    public AnimLayer(@NonNull Context context) {
-        super(context);
-    }
+
     ArrayList<SingleGrid> girdList = new ArrayList<>(); //方块队列，用来规划方块的形成规则，主要用于存放和获取暂时需要移动的方块
 
     /**
      * 生成方块
      * @param singleGrid
      */
-    public void createGird(SingleGrid singleGrid){
+    public void createGird(final SingleGrid singleGrid){
+
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f,1,0.1f,1, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        scaleAnimation.setDuration(100);
         singleGrid.setAnimation(null);
+        scaleAnimation.setDuration(4000);
+        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                singleGrid.getShow().setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                singleGrid.getShow().setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                singleGrid.getShow().setVisibility(View.VISIBLE);
+            }
+        });
         singleGrid.getShow().startAnimation(scaleAnimation);
+        singleGrid.startAnimation(scaleAnimation);
     }
 
 
@@ -78,9 +97,9 @@ public class AnimLayer extends FrameLayout {
     public void girdMove(SingleGrid originGird, final SingleGrid finalGird, int X1, int X2, int Y1, int Y2){
         final SingleGrid temGird = getGird(originGird.getNumber());
 
-        LayoutParams layoutParams = new LayoutParams(R.integer.girdWith, R.integer.girdheight);
-        layoutParams.leftMargin = Integer.valueOf(R.integer.girdWith)*X1;
-        layoutParams.topMargin = Integer.valueOf(R.integer.girdheight)*Y1;
+        LayoutParams layoutParams = new LayoutParams(Values.girdWidth, Values.girdWidth);
+        layoutParams.leftMargin = Integer.valueOf(Values.girdWidth)*X1;
+        layoutParams.topMargin = Integer.valueOf(Values.girdWidth)*Y1;
         temGird.setLayoutParams(layoutParams);
 
         if(finalGird.getNumber()<=0){
@@ -88,18 +107,16 @@ public class AnimLayer extends FrameLayout {
         }
 
         TranslateAnimation translateAnimation = new TranslateAnimation(0,Integer.valueOf(R.integer.girdWith)*(X2-X1),0,Integer.valueOf(R.integer.girdheight)*(Y2-Y1));
-        translateAnimation.setDuration(20);
+        translateAnimation.setDuration(5000);
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 finalGird.getShow().setVisibility(View.VISIBLE);
                 removeGird(temGird);
-
             }
 
             @Override
@@ -112,5 +129,23 @@ public class AnimLayer extends FrameLayout {
 
 
     }
+
+
+    public AnimLayer(@NonNull Context context) {
+        super(context);
+    }
+
+    public AnimLayer(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public AnimLayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public AnimLayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
 
 }

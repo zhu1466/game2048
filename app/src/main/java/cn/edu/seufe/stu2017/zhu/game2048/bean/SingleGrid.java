@@ -3,6 +3,8 @@ package cn.edu.seufe.stu2017.zhu.game2048.bean;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -10,11 +12,37 @@ import androidx.annotation.NonNull;
 
 import cn.edu.seufe.stu2017.zhu.game2048.R;
 
+import static cn.edu.seufe.stu2017.zhu.game2048.R.color.Color0;
+
 public class SingleGrid extends FrameLayout {
-    int number;
+    int number=0;
     TextView show;
+    View backgroundView;
+    @SuppressLint("ResourceAsColor")
     public SingleGrid(@NonNull Context context) {
+
         super(context);
+
+
+        LayoutParams layoutParams = null;
+        layoutParams = new LayoutParams(-1,-1);
+        layoutParams.setMargins(10,10,0,0);
+
+        backgroundView = new View(this.getContext());
+        backgroundView.setBackgroundColor(0x33ffffff);
+        addView(backgroundView,layoutParams);
+
+        show = new TextView(getContext());
+        show.setTextSize(28);
+        show.setGravity(Gravity.CENTER);
+
+        layoutParams = new LayoutParams(-1,-1);
+        layoutParams.setMargins(10,10,0,0);
+        addView(show, layoutParams);
+
+        setNumber(0);
+
+
     }
 
     public int getNumber() {
@@ -44,7 +72,7 @@ public class SingleGrid extends FrameLayout {
         }
         switch (num){
             case 0:
-                show.setBackgroundColor(R.color.Color0);
+                show.setBackgroundColor(0x00000000);
                 break;
             case 2:
                 show.setBackgroundColor(R.color.Color2);
@@ -83,6 +111,7 @@ public class SingleGrid extends FrameLayout {
                 show.setBackgroundColor(R.color.Color4096);
                 break;
             default:
+                show.setBackgroundColor(0xff3c3a32);
                 break;
 
 

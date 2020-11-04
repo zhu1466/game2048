@@ -6,7 +6,9 @@
     <color name="titleColor">#009688</color>
 
     <!-- -->
-    <color name="Color0">#00FFFFFF</color>
+
+
+    <color name="Color0">#FDE4DFB1</color>
     <color name="Color2">#C5B635</color>
     <color name="Color4">#CDBD31</color>
     <color name="Color8">#F6E337</color>
@@ -19,6 +21,8 @@
     <color name="Color1024">#EC353B</color>
     <color name="Color2048">#E41A14</color>
     <color name="Color4096">#F60008</color>
+
+
 
 
 
