@@ -35,11 +35,12 @@ public class AnimLayer extends FrameLayout {
 
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f,1,0.1f,1, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         singleGrid.setAnimation(null);
-        scaleAnimation.setDuration(4000);
+        singleGrid.getShow().setAnimation(null);
+        scaleAnimation.setDuration(1000);
         scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                singleGrid.getShow().setVisibility(View.VISIBLE);
+
             }
 
             @Override
@@ -107,10 +108,12 @@ public class AnimLayer extends FrameLayout {
         }
 
         TranslateAnimation translateAnimation = new TranslateAnimation(0,Integer.valueOf(R.integer.girdWith)*(X2-X1),0,Integer.valueOf(R.integer.girdheight)*(Y2-Y1));
-        translateAnimation.setDuration(5000);
+        translateAnimation.setDuration(100);
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                finalGird.getShow().setVisibility(View.VISIBLE);
+                removeGird(temGird);
             }
 
             @Override
@@ -121,6 +124,8 @@ public class AnimLayer extends FrameLayout {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                finalGird.getShow().setVisibility(View.VISIBLE);
+                removeGird(temGird);
 
             }
         });
@@ -141,10 +146,6 @@ public class AnimLayer extends FrameLayout {
 
     public AnimLayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public AnimLayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 

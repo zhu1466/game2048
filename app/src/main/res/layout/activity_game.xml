@@ -10,6 +10,7 @@
 
     <LinearLayout
         android:id="@+id/container"
+        android:layout_marginTop="30dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -18,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="score"
+            android:textColor="#009688"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
@@ -27,12 +29,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#009688"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="bestscore"
+            android:textColor="#009688"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -40,6 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#009688"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
@@ -70,10 +75,5 @@
         </cn.edu.seufe.stu2017.zhu.game2048.function.AnimLayer>
     </FrameLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="appinfo"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

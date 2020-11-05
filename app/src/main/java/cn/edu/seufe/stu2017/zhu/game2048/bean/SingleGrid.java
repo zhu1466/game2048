@@ -30,10 +30,13 @@ public class SingleGrid extends FrameLayout {
 
         backgroundView = new View(this.getContext());
         backgroundView.setBackgroundColor(0x33ffffff);
+        backgroundView.setVisibility(VISIBLE);
         addView(backgroundView,layoutParams);
 
         show = new TextView(getContext());
         show.setTextSize(28);
+        show.setTextColor(0xFF000000);
+        show.setVisibility(View.VISIBLE);
         show.setGravity(Gravity.CENTER);
 
         layoutParams = new LayoutParams(-1,-1);
@@ -58,7 +61,7 @@ public class SingleGrid extends FrameLayout {
     }
 
     /**
-     * 配置方块的数字大小以及颜色，数字大小和颜色一一对应
+     * 配置方块的数字大小以及颜色，数字大小和颜色一一对应，此色彩选择参考网络资源
      * @param num 配置数字大小
      */
     @SuppressLint("ResourceAsColor")
@@ -75,40 +78,37 @@ public class SingleGrid extends FrameLayout {
                 show.setBackgroundColor(0x00000000);
                 break;
             case 2:
-                show.setBackgroundColor(R.color.Color2);
+                show.setBackgroundColor(0xffeee4da);
                 break;
             case 4:
-                show.setBackgroundColor(R.color.Color4);
+                show.setBackgroundColor(0xffede0c8);
                 break;
             case 8:
-                show.setBackgroundColor(R.color.Color8);
+                show.setBackgroundColor(0xfff2b179);
                 break;
             case 16:
-                show.setBackgroundColor(R.color.Color16);
+                show.setBackgroundColor(0xfff59563);
                 break;
             case 32:
-                show.setBackgroundColor(R.color.Color32);
+                show.setBackgroundColor(0xfff67c5f);
                 break;
             case 64:
-                show.setBackgroundColor(R.color.Color64);
+                show.setBackgroundColor(0xfff65e3b);
                 break;
             case 128:
-                show.setBackgroundColor(R.color.Color128);
+                show.setBackgroundColor(0xffedcf72);
                 break;
             case 256:
-                show.setBackgroundColor(R.color.Color256);
+                show.setBackgroundColor(0xffedcc61);
                 break;
             case 512:
-                show.setBackgroundColor(R.color.Color512);
+                show.setBackgroundColor(0xffedc850);
                 break;
             case 1024:
-                show.setBackgroundColor(R.color.Color1024);
+                show.setBackgroundColor(0xffedc53f);
                 break;
             case 2048:
-                show.setBackgroundColor(R.color.Color2048);
-                break;
-            case 4096:
-                show.setBackgroundColor(R.color.Color4096);
+                show.setBackgroundColor(0xffedc22e);
                 break;
             default:
                 show.setBackgroundColor(0xff3c3a32);

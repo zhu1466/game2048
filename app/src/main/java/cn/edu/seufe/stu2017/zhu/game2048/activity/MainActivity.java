@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import cn.edu.seufe.stu2017.zhu.game2048.R;
+import cn.edu.seufe.stu2017.zhu.game2048.bean.Record;
 
 /**
  * 主界面
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,GameActivity.class);
+                intent.setClass(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
             }
         });

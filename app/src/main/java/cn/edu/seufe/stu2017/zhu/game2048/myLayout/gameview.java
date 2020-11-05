@@ -1,7 +1,9 @@
 package cn.edu.seufe.stu2017.zhu.game2048.myLayout;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -34,6 +36,13 @@ public class gameview extends LinearLayout {
 //
 //    }
 
+    /**
+     * 在界面生成时被调用
+     * @param w
+     * @param h
+     * @param oldw
+     * @param oldh
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -45,6 +54,11 @@ public class gameview extends LinearLayout {
         gameStart();
     }
 
+    /**
+     * 添加网格
+     * @param cardWidth
+     * @param cardHeight
+     */
     private void addCards(int cardWidth,int cardHeight){
 
         SingleGrid c;
@@ -66,33 +80,17 @@ public class gameview extends LinearLayout {
         }
     }
 
-    private int GetCardWidth()
-    {
 
-        //屏幕信息的对象
-        DisplayMetrics displayMetrics;
-        displayMetrics = getResources().getDisplayMetrics();
-
-        //获取屏幕信息
-        int cardWidth;
-        cardWidth = displayMetrics.widthPixels;
-
-        //一行有四个卡片，每个卡片占屏幕的四分之一
-        return ( cardWidth - 10 ) / 4;
-
-    }
-
-
-
-
+    /**
+     * 初始化
+     */
     @SuppressLint("ResourceAsColor")
     public void initGameView(){
 
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(0xffbbada0);
 
-        int tem = GetCardWidth();
-        addCards(GetCardWidth(),GetCardWidth());
+        addCards(257,257);
 
         setOnTouchListener(new View.OnTouchListener() {
             float x0,y0;//用来记录用户初始的手势位置
@@ -143,7 +141,6 @@ public class gameview extends LinearLayout {
         GameActivity gameActivity = GameActivity.getGameActivity();
         for(int i = 0; i < Values.columnNum; i++){
             for(int j = 0; j < Values.columnNum; j++){
-                girdNumber[i][j] = new SingleGrid(this.getContext());
                 girdNumber[i][j].setNumber(0);
             }
         }
@@ -158,7 +155,6 @@ public class gameview extends LinearLayout {
     public void addNewGird(){
         List<Point> emptyPonintRecord = new ArrayList<Point>();
         emptyPonintRecord.clear();
-
 
         for(int i = 0; i < Values.columnNum; i++){
             for (int j = 0; j < Values.columnNum; j++){
@@ -176,19 +172,19 @@ public class gameview extends LinearLayout {
             }else {
                 newGirdNum=4;
             }
-            newGirdPoint = emptyPonintRecord.remove((int)Math.random()*emptyPonintRecord.size());
+            newGirdPoint = emptyPonintRecord.remove((int)(Math.random()*emptyPonintRecord.size()));
             SingleGrid singleGrid = new SingleGrid(this.getContext());
             singleGrid.setNumber(newGirdNum);
             girdNumber[newGirdPoint.x][newGirdPoint.y] = singleGrid;
 
-            GameActivity.getGameActivity().getAnimLayer().createGird(singleGrid);
+            GameActivity.getGameActivity().getAnimLayer().createGird(girdNumber[newGirdPoint.x][newGirdPoint.y]);
         }
 
 
     }
 
     /**
-     * 向左移动
+     * 向各个方向移动
      */
     public void moveLeft(){
         boolean flag = false;
@@ -206,6 +202,7 @@ public class gameview extends LinearLayout {
                         girdNumber[j][i].setNumber(girdNumber[j][i].getNumber()*2);
                         girdNumber[x][i].setNumber(0);
                         //加分
+                        GameActivity.getGameActivity().addScore(girdNumber[j][i].getNumber());
                         flag = true;
                     }
                 }
@@ -213,6 +210,7 @@ public class gameview extends LinearLayout {
         }
         if(flag){
             addNewGird();
+            checkIsEnd();
         }
     }
 
@@ -234,6 +232,7 @@ public class gameview extends LinearLayout {
                             girdNumber[x][y].setNumber(girdNumber[x][y].getNumber()*2);
                             girdNumber[xx][y].setNumber(0);
                             //加分
+                            GameActivity.getGameActivity().addScore(girdNumber[x][y].getNumber());
                             flag = true;
                         }
                         break;
@@ -244,16 +243,16 @@ public class gameview extends LinearLayout {
         }
         if(flag){
             addNewGird();
+            checkIsEnd();
         }
     }
-
 
     public void moveUp(){
         boolean flag = false;
         for(int x = 0; x < Values.columnNum ; x++){
             for(int y = 0 ; y < Values.columnNum ; y++){
                 for(int yy = y + 1 ; yy < Values.columnNum; yy++){
-                    if(girdNumber[x][yy].getNumber() == 0){
+                    if(girdNumber[x][yy].getNumber() > 0){
                         if(girdNumber[x][y].getNumber()<=0){
                             GameActivity.getGameActivity().getAnimLayer().girdMove(girdNumber[x][yy], girdNumber[x][y],x,x,yy,y);
                             girdNumber[x][y].setNumber(girdNumber[x][yy].getNumber());
@@ -266,6 +265,7 @@ public class gameview extends LinearLayout {
                             girdNumber[x][y].setNumber(girdNumber[x][y].getNumber()*2);
                             girdNumber[x][yy].setNumber(0);
                             //加分
+                            GameActivity.getGameActivity().addScore(girdNumber[x][y].getNumber());
                             flag = true;
                         }
                         break;
@@ -275,9 +275,9 @@ public class gameview extends LinearLayout {
         }
         if(flag){
             addNewGird();
+            checkIsEnd();
         }
     }
-
 
     public void moveDown(){
         boolean flag = false;
@@ -297,7 +297,7 @@ public class gameview extends LinearLayout {
                             GameActivity.getGameActivity().getAnimLayer().girdMove(girdNumber[x][yy], girdNumber[x][y],x,x,yy,y);
                             girdNumber[x][y].setNumber(girdNumber[x][y].getNumber()*2);
                             girdNumber[x][yy].setNumber(0);
-                            //加分
+                            GameActivity.getGameActivity().addScore(girdNumber[x][y].getNumber());
                             flag = true;
                         }
                         break;
@@ -307,12 +307,48 @@ public class gameview extends LinearLayout {
         }
         if(flag){
             addNewGird();
+            checkIsEnd();
         }
     }
 
+    /**
+     * 判断游戏是否结束
+     */
+    public void checkIsEnd(){
+        boolean flag = true;
+        OUTSIDE:
+            for(int y = 0; y<Values.columnNum;y++){
+                for(int x = 0 ; x<Values.columnNum;x++){
+                    if(girdNumber[x][y].getNumber() == 0 ||
+                            (x>0&&girdNumber[x][y].getNumber()==girdNumber[x-1][y].getNumber())||
+                            (x<Values.columnNum-1&&girdNumber[x][y].getNumber()==girdNumber[x+1][y].getNumber())||
+                            (y>0&&girdNumber[x][y].getNumber()==girdNumber[x][y-1].getNumber())||
+                            (y<Values.columnNum-1&&girdNumber[x][y].getNumber()==girdNumber[x][y+1].getNumber())
+                    ){
+                        flag = false;
+                        break OUTSIDE;
+                    }
+                }
+            }
+
+        if(flag){
+            new AlertDialog.Builder(getContext()).setTitle("game2048").setMessage("game over").setPositiveButton("remake", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    gameStart();
+
+                }
+            }).show();
+        }
 
 
+    }
 
+
+    /**
+     * 构造方法
+     * @param context
+     */
     public gameview(Context context) {
         super(context);
         initGameView();
@@ -328,8 +364,4 @@ public class gameview extends LinearLayout {
         initGameView();
     }
 
-    public gameview(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initGameView();
-    }
 }
