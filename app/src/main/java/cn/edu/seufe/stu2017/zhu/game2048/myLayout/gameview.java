@@ -24,17 +24,10 @@ import cn.edu.seufe.stu2017.zhu.game2048.bean.SingleGrid;
 import cn.edu.seufe.stu2017.zhu.game2048.function.AnimLayer;
 
 public class gameview extends LinearLayout {
-
-    SingleGrid[][] girdNumber = new SingleGrid[5][5] ;
+    List<Point> emptyPoints = new ArrayList<Point>();
+    SingleGrid[][] girdNumber = new SingleGrid[Values.columnNum][Values.columnNum] ;
     AnimLayer animLayer;
 
-
-//    protected void onSizeChanged(int w, int h, int oldw, int oldh){
-//        super.onSizeChanged(w,h,oldw,oldh);
-//        //girdWith = (int)(Math.min(w,h)-10)/R.integer.columnNum;
-//        addNewGird(girdWith,girdheight);
-//
-//    }
 
     /**
      * 在界面生成时被调用
@@ -59,7 +52,7 @@ public class gameview extends LinearLayout {
      * @param cardWidth
      * @param cardHeight
      */
-    private void addCards(int cardWidth,int cardHeight){
+    private void addGirds(int cardWidth,int cardHeight){
 
         SingleGrid c;
 
@@ -90,7 +83,7 @@ public class gameview extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(0xffbbada0);
 
-        addCards(257,257);
+        addGirds(257,257);
 
         setOnTouchListener(new View.OnTouchListener() {
             float x0,y0;//用来记录用户初始的手势位置
@@ -107,18 +100,14 @@ public class gameview extends LinearLayout {
                         y = event.getY()-y0;
                         if(x*x>y*y){
                             if(x<-5){
-                                Log.i("TAG:","GO LEFT;testSuccess");
                                 moveLeft();
                             }else if(x>5){
-                                Log.i("TAG:","GO RIGHT;testSuccess");
                                 moveRight();
                             }
                         }else if(x*x<y*y){
                             if(y<-5){
-                                Log.i("TAG:","GO UP;testSuccess");
                                 moveUp();
                             }else if(y>5){
-                                Log.i("TAG:","GO DOWN;testSuccess");
                                 moveDown();
                             }
                         }
@@ -139,6 +128,8 @@ public class gameview extends LinearLayout {
     public void gameStart(){
 
         GameActivity gameActivity = GameActivity.getGameActivity();
+        gameActivity.clearScore();
+        gameActivity.showBestScore(gameActivity.getBestScore());
         for(int i = 0; i < Values.columnNum; i++){
             for(int j = 0; j < Values.columnNum; j++){
                 girdNumber[i][j].setNumber(0);
@@ -146,42 +137,42 @@ public class gameview extends LinearLayout {
         }
         addNewGird();
         addNewGird(); //游戏规则:在游戏一开始加入两个方块
+
     }
 
+    private void addNewGird(){
 
-    /**
-     * 生成随机格子
-     */
-    public void addNewGird(){
-        List<Point> emptyPonintRecord = new ArrayList<Point>();
-        emptyPonintRecord.clear();
+        emptyPoints.clear();
 
-        for(int i = 0; i < Values.columnNum; i++){
-            for (int j = 0; j < Values.columnNum; j++){
-                if(girdNumber[i][j].getNumber()<=0){
-                    emptyPonintRecord.add(new Point(i,j));
+        for (int y = 0; y < Values.columnNum; y++) {
+            for (int x = 0; x < Values.columnNum; x++) {
+                if (girdNumber[x][y].getNumber()<=0) {
+                    emptyPoints.add(new Point(x, y));
                 }
             }
         }
 
-        if(emptyPonintRecord.size()>0){
-            int newGirdNum;
-            Point newGirdPoint;
-            if(Math.random()>0.2){
-                newGirdNum=2;
+        if (emptyPoints.size()>0) {
+
+            Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));
+
+
+            if(Math.random()>0.1){
+                girdNumber[p.x][p.y].setNumber(2);
             }else {
-                newGirdNum=4;
+                girdNumber[p.x][p.y].setNumber(4);
             }
-            newGirdPoint = emptyPonintRecord.remove((int)(Math.random()*emptyPonintRecord.size()));
-            SingleGrid singleGrid = new SingleGrid(this.getContext());
-            singleGrid.setNumber(newGirdNum);
-            girdNumber[newGirdPoint.x][newGirdPoint.y] = singleGrid;
 
-            GameActivity.getGameActivity().getAnimLayer().createGird(girdNumber[newGirdPoint.x][newGirdPoint.y]);
+            SingleGrid singleGrid  = new SingleGrid(this.getContext());
+            singleGrid.setNumber(girdNumber[p.x][p.y].getNumber());
+            GameActivity.getGameActivity().getAnimLayer().createGird(singleGrid);
         }
-
-
     }
+
+
+
+
+
 
     /**
      * 向各个方向移动
@@ -332,7 +323,8 @@ public class gameview extends LinearLayout {
             }
 
         if(flag){
-            new AlertDialog.Builder(getContext()).setTitle("game2048").setMessage("game over").setPositiveButton("remake", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(getContext()).setTitle("game2048").setMessage("game over").
+                    setPositiveButton("remake", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     gameStart();

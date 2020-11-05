@@ -26,10 +26,10 @@ public class RecordActivity extends ListActivity {
 
         DBHelper dbHelper = new DBHelper(this.getBaseContext(), "game2048",null,2);
         SQLiteDatabase sqliteDatabase = dbHelper.getWritableDatabase();
-        String sql = "insert into userscore (SCORE,TIME) values ('3054','2020-11-3')";
+        //String sql = "insert into userscore (SCORE,TIME) values ('3054','2020-11-3')";
         DBManager dbManager =new DBManager(this);
         List<Record> records =  dbManager.listAll();
-        sqliteDatabase.execSQL(sql);
+        //sqliteDatabase.execSQL(sql);
 
         for(int i = 0; i <records.size() ; i++){
             HashMap<String, String> map = new HashMap<String, String>();

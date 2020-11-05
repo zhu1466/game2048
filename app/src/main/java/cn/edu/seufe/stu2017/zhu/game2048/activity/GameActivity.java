@@ -12,7 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import cn.edu.seufe.stu2017.zhu.game2048.DB.DBManager;
 import cn.edu.seufe.stu2017.zhu.game2048.R;
+import cn.edu.seufe.stu2017.zhu.game2048.bean.Record;
 import cn.edu.seufe.stu2017.zhu.game2048.function.AnimLayer;
 import cn.edu.seufe.stu2017.zhu.game2048.myLayout.gameview;
 
@@ -47,14 +52,25 @@ public class GameActivity extends AppCompatActivity {
 
         tvScore = (TextView) findViewById(R.id.tvScore);
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
+        tvBestScore.setText(String.valueOf(getBestScore()));
 
 
         gameView = (gameview) findViewById(R.id.gameView);
 
         btnNewGame = (Button) findViewById(R.id.btnNewGame);
-        btnNewGame.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {
+        btnNewGame.setOnClickListener(new View.OnClickListener() {@Override
+        public void onClick(View v) {
+            Record record = new Record();
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+            Date date = new Date(System.currentTimeMillis());
+            System.out.println(formatter.format(date));
+            record.setTime(formatter.format(date));
+            record.setScore((String)tvScore.getText());
+            DBManager dbManager = new DBManager(getBaseContext());
+            dbManager.add(record);
             gameView.gameStart();
-        }});
+        }
+        });
 
         animLayer = (AnimLayer) findViewById(R.id.animLayer);
 

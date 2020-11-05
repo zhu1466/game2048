@@ -35,7 +35,6 @@ public class AnimLayer extends FrameLayout {
 
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f,1,0.1f,1, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         singleGrid.setAnimation(null);
-        singleGrid.getShow().setAnimation(null);
         scaleAnimation.setDuration(1000);
         scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -97,36 +96,27 @@ public class AnimLayer extends FrameLayout {
      */
     public void girdMove(SingleGrid originGird, final SingleGrid finalGird, int X1, int X2, int Y1, int Y2){
         final SingleGrid temGird = getGird(originGird.getNumber());
-
         LayoutParams layoutParams = new LayoutParams(Values.girdWidth, Values.girdWidth);
         layoutParams.leftMargin = Integer.valueOf(Values.girdWidth)*X1;
         layoutParams.topMargin = Integer.valueOf(Values.girdWidth)*Y1;
         temGird.setLayoutParams(layoutParams);
-
         if(finalGird.getNumber()<=0){
             finalGird.getShow().setVisibility(View.INVISIBLE);
         }
-
-        TranslateAnimation translateAnimation = new TranslateAnimation(0,Integer.valueOf(R.integer.girdWith)*(X2-X1),0,Integer.valueOf(R.integer.girdheight)*(Y2-Y1));
-        translateAnimation.setDuration(100);
+        TranslateAnimation translateAnimation = new TranslateAnimation(0,Integer.valueOf(R.integer.girdWith)*(X2-X1),
+                0,Integer.valueOf(R.integer.girdheight)*(Y2-Y1));
+        translateAnimation.setDuration(10000);
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                finalGird.getShow().setVisibility(View.VISIBLE);
-                removeGird(temGird);
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 finalGird.getShow().setVisibility(View.VISIBLE);
                 removeGird(temGird);
             }
-
             @Override
             public void onAnimationRepeat(Animation animation) {
-                finalGird.getShow().setVisibility(View.VISIBLE);
-                removeGird(temGird);
-
             }
         });
 
